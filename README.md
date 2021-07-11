@@ -1,13 +1,19 @@
-xplr plugin template
-====================
+completion.xplr
+===============
 
-Use this template to [write your own xplr plugin](https://arijitbasu.in/xplr/en/writing-plugins.html).
+The missing tab completion for xplr input buffer.
+
+This plugin is intended to be used as a library for other potential plugins
+or custom hacks.
 
 
-Requirements
-------------
+TODO
+----
 
-- Some tool
+- [x] Path completion
+- [ ] Command completion
+- [ ] Message completion
+- [ ] Multisource completion
 
 
 Installation
@@ -26,26 +32,75 @@ Installation
   ```bash
   mkdir -p ~/.config/xplr/plugins
 
-  git clone https://github.com/me/{plugin}.xplr ~/.config/xplr/plugins/{plugin}
+  git clone https://github.com/sayanarijit/completion.xplr ~/.config/xplr/plugins/completion
   ```
 
 - Require the module in `~/.config/xplr/init.lua`
 
   ```lua
-  require("{plugin}").setup()
-  
-  -- Or
-  
-  require("{plugin}").setup{
-    mode = "action",
-    key = ":",
-  }
-
-  -- Type `::` and enjoy.
+  require("completion").setup()
   ```
 
 
-Features
+Use Case
 --------
 
-- Some cool feature
+Switch to completion mode (look at the `tab` key)
+
+  ```lua
+  -- Path completion
+
+  xplr.config.modes.builtin.go_to.key_bindings.on_key.p = {
+    help = "go to path",
+    messages = {
+      "PopMode",
+      { SwitchModeCustom = "go_to_path" },
+      { SetInputBuffer = "" },
+    }
+  }
+
+  xplr.config.modes.custom.go_to_path = {
+    name = "go to path",
+    key_bindings = {
+      on_key = {
+        enter = {
+          messages = {
+            "FocusPathFromInput",
+            "PopMode",
+          },
+        },
+        esc = {
+          help = "cancel",
+          messages = { "PopMode" },
+        },
+        tab = {
+          help = "complete",
+          messages = {
+            { CallLuaSilently = "custom.completion.complete_path" },
+          },
+        },
+        ["ctrl-c"] = {
+          help = "terminate",
+          messages = { "Terminate" },
+        },
+        backspace = {
+          help = "remove last character",
+          messages = { "RemoveInputBufferLastCharacter" },
+        },
+        ["ctrl-u"] = {
+          help = "remove line",
+          messages = { { SetInputBuffer = "" } },
+        },
+        ["ctrl-w"] = {
+          help = "remove last word",
+          messages = { "RemoveInputBufferLastWord" },
+        },
+      },
+      default = {
+        messages = {
+          "BufferInputFromKey"
+        },
+      },
+    },
+  }
+  ```
