@@ -15,6 +15,7 @@ TODO
 - [ ] Message completion
 - [ ] Multisource completion
 - [ ] Partial completion
+- [ ] Better API
 
 
 Installation
