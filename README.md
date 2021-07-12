@@ -14,6 +14,7 @@ TODO
 - [x] Command completion
 - [ ] Message completion
 - [ ] Multisource completion
+- [ ] Partial completion
 
 
 Installation
