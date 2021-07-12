@@ -13,7 +13,7 @@ TODO
 - [x] Path completion
 - [x] Command completion
 - [ ] Message completion
-- [ ] Multisource completion
+- [ ] Multi source completion
 - [ ] Partial completion
 - [ ] Better API
 
