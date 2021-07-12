@@ -11,7 +11,7 @@ TODO
 ----
 
 - [x] Path completion
-- [ ] Command completion
+- [x] Command completion
 - [ ] Message completion
 - [ ] Multisource completion
 
@@ -39,6 +39,10 @@ Installation
 
   ```lua
   require("completion").setup()
+
+  -- Exposed functions:
+  -- - xplr.fn.custom.completion.complete_path
+  -- - xplr.fn.custom.completion.complete_command
   ```
 
 
