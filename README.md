@@ -1,14 +1,11 @@
-completion.xplr
-===============
+# completion.xplr
 
 The missing tab completion for xplr input buffer.
 
 This plugin is intended to be used as a library for other potential plugins
 or custom hacks.
 
-
-TODO
-----
+## TODO
 
 - [x] Path completion
 - [x] Command completion
@@ -17,16 +14,19 @@ TODO
 - [ ] Partial completion
 - [ ] Better API
 
-
-Installation
-------------
+## Installation
 
 ### Install manually
 
 - Add the following line in `~/.config/xplr/init.lua`
 
   ```lua
-  package.path = os.getenv("HOME") .. '/.config/xplr/plugins/?/src/init.lua'
+  local home = os.getenv("HOME")
+  package.path = home
+  .. "/.config/xplr/plugins/?/init.lua;"
+  .. home
+  .. "/.config/xplr/plugins/?.lua;"
+  .. package.path
   ```
 
 - Clone the plugin
@@ -47,66 +47,64 @@ Installation
   -- - xplr.fn.custom.completion.complete_command
   ```
 
-
-Use Case
---------
+## Use Case
 
 Switch to completion mode (look at the `tab` key)
 
-  ```lua
-  -- Path completion
+```lua
+-- Path completion
 
-  xplr.config.modes.builtin.go_to.key_bindings.on_key.p = {
-    help = "go to path",
-    messages = {
-      "PopMode",
-      { SwitchModeCustom = "go_to_path" },
-      { SetInputBuffer = "" },
-    }
+xplr.config.modes.builtin.go_to.key_bindings.on_key.p = {
+  help = "go to path",
+  messages = {
+    "PopMode",
+    { SwitchModeCustom = "go_to_path" },
+    { SetInputBuffer = "" },
   }
+}
 
-  xplr.config.modes.custom.go_to_path = {
-    name = "go to path",
-    key_bindings = {
-      on_key = {
-        enter = {
-          messages = {
-            "FocusPathFromInput",
-            "PopMode",
-          },
-        },
-        esc = {
-          help = "cancel",
-          messages = { "PopMode" },
-        },
-        tab = {
-          help = "complete",
-          messages = {
-            { CallLuaSilently = "custom.completion.complete_path" },
-          },
-        },
-        ["ctrl-c"] = {
-          help = "terminate",
-          messages = { "Terminate" },
-        },
-        backspace = {
-          help = "remove last character",
-          messages = { "RemoveInputBufferLastCharacter" },
-        },
-        ["ctrl-u"] = {
-          help = "remove line",
-          messages = { { SetInputBuffer = "" } },
-        },
-        ["ctrl-w"] = {
-          help = "remove last word",
-          messages = { "RemoveInputBufferLastWord" },
+xplr.config.modes.custom.go_to_path = {
+  name = "go to path",
+  key_bindings = {
+    on_key = {
+      enter = {
+        messages = {
+          "FocusPathFromInput",
+          "PopMode",
         },
       },
-      default = {
+      esc = {
+        help = "cancel",
+        messages = { "PopMode" },
+      },
+      tab = {
+        help = "complete",
         messages = {
-          "BufferInputFromKey"
+          { CallLuaSilently = "custom.completion.complete_path" },
         },
+      },
+      ["ctrl-c"] = {
+        help = "terminate",
+        messages = { "Terminate" },
+      },
+      backspace = {
+        help = "remove last character",
+        messages = { "RemoveInputBufferLastCharacter" },
+      },
+      ["ctrl-u"] = {
+        help = "remove line",
+        messages = { { SetInputBuffer = "" } },
+      },
+      ["ctrl-w"] = {
+        help = "remove last word",
+        messages = { "RemoveInputBufferLastWord" },
       },
     },
-  }
-  ```
+    default = {
+      messages = {
+        "BufferInputFromKey"
+      },
+    },
+  },
+}
+```
